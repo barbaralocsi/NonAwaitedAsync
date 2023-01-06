@@ -61,7 +61,7 @@ namespace MakeConst {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variables that are not modified should be made constants.
+        ///   Looks up a localized string similar to Non-awaited async call.
         /// </summary>
         internal static string AnalyzerDescription {
             get {

@@ -9,6 +9,30 @@ namespace MakeConst.Test
     [TestClass]
     public class MakeConstUnitTest
     {
+
+
+        [TestMethod]
+        public async Task VariableIsAssigned_NoDiagnostic()
+        {
+            await VerifyCS.VerifyAnalyzerAsync(@"
+using System;
+
+class Program
+{
+    static void Main()
+    {
+        var a = await Test1();
+    }
+
+    private static async Task<int> Test1()
+    {
+        return 1;
+    }
+}
+
+");
+        }
+
         //No diagnostics expected to show up
         [TestMethod]
         public async Task TestMethod1()
