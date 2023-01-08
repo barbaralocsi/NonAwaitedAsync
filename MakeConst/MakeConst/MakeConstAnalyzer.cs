@@ -38,10 +38,10 @@ namespace MakeConst
             // See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
             //context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.NamedType);
 
-            context.RegisterSyntaxNodeAction(AnalyseSymbolNode, SyntaxKind.InvocationExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeSymbolNode, SyntaxKind.InvocationExpression);
         }
 
-        private void AnalyseSymbolNode(SyntaxNodeAnalysisContext syntaxNodeAnalysisContext)
+        private void AnalyzeSymbolNode(SyntaxNodeAnalysisContext syntaxNodeAnalysisContext)
         {
             if (syntaxNodeAnalysisContext.Node is InvocationExpressionSyntax node)
             {
@@ -56,11 +56,8 @@ namespace MakeConst
                         return;
                     }
 
-                    
-
-                    if (methodSymbol.ReturnType.Equals(
-                            syntaxNodeAnalysisContext.SemanticModel.Compilation.GetTypeByMetadataName(typeof(Task)
-                                .FullName)))
+                    var taskNamedTypeSymbol = syntaxNodeAnalysisContext.SemanticModel.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
+                    if (methodSymbol.ReturnType.Equals(taskNamedTypeSymbol))
                     {
                         // For all such symbols, produce a diagnostic.
                         var diagnostic =
@@ -71,10 +68,7 @@ namespace MakeConst
 
                     if (methodSymbol.ReturnType is INamedTypeSymbol symbol)
                     {
-                        if (symbol.IsGenericType &&
-                            symbol.BaseType.Equals(
-                                syntaxNodeAnalysisContext.SemanticModel.Compilation.GetTypeByMetadataName(typeof(Task)
-                                    .FullName)))
+                        if (symbol.IsGenericType && symbol.BaseType.Equals(taskNamedTypeSymbol))
                         {
                             // For all such symbols, produce a diagnostic.
                             var diagnostic =

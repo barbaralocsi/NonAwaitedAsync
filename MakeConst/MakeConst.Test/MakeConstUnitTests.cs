@@ -14,7 +14,32 @@ namespace MakeConst.Test
         [TestMethod]
         public async Task AwaitedAsyncTask_NoDiagnostic()
         {
-            await VerifyCS.VerifyAnalyzerAsync(@"
+            const string code = @"
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    public static async Task Main()
+    {
+        await GetValueAsync(1);
+        Console.WriteLine(3);
+    }
+
+    private static async Task GetValueAsync(int numberToAdd)
+    {
+        await Task.Run(() => numberToAdd * 2);
+    }
+}
+
+";
+            await VerifyCS.VerifyAnalyzerAsync(code);
+        }
+
+        [TestMethod]
+        public async Task AwaitedAsyncTaskInt_NoDiagnostic()
+        {
+            const string code = @"
 using System;
 using System.Threading.Tasks;
 
@@ -32,15 +57,46 @@ class Program
     }
 }
 
-");
+";
+            await VerifyCS.VerifyAnalyzerAsync(code);
         }
 
         [TestMethod]
-        public async Task NonAwaitedAsyncTask_Diagnostic()
+        public async Task NonAwaitedAsyncTask_ProducesDiagnostic()
         {
 
-            var expected = VerifyCS.Diagnostic("MakeConst").WithMessage("Async call should be awaited").WithSpan(9, 17, 9, 33);
-            await VerifyCS.VerifyAnalyzerAsync(@"
+            const string code = @"
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    public static async Task Main()
+    {
+        var a = GetValueAsync(1);
+        Console.WriteLine(a);
+    }
+
+    private static async Task GetValueAsync(int numberToAdd)
+    {
+        await Task.Run(() => numberToAdd * 2);
+    }
+}
+
+";
+
+            var expected = VerifyCS.Diagnostic("MakeConst")
+                .WithMessage("Async call should be awaited")
+                .WithSpan(9, 17, 9, 33);
+
+            await VerifyCS.VerifyAnalyzerAsync(code, expected);
+        }
+
+        [TestMethod]
+        public async Task NonAwaitedAsyncTaskInt_ProducesDiagnostic()
+        {
+
+            const string code = @"
 using System;
 using System.Threading.Tasks;
 
@@ -58,7 +114,13 @@ class Program
     }
 }
 
-", expected);
+";
+
+            var expected = VerifyCS.Diagnostic("MakeConst")
+                .WithMessage("Async call should be awaited")
+                .WithSpan(9, 17, 9, 33);
+
+            await VerifyCS.VerifyAnalyzerAsync(code, expected);
         }
 
         //No diagnostics expected to show up
