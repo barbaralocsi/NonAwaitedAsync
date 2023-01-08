@@ -12,25 +12,53 @@ namespace MakeConst.Test
 
 
         [TestMethod]
-        public async Task VariableIsAssigned_NoDiagnostic()
+        public async Task AwaitedAsyncTask_NoDiagnostic()
         {
             await VerifyCS.VerifyAnalyzerAsync(@"
 using System;
+using System.Threading.Tasks;
 
 class Program
 {
-    static void Main()
+    public static async Task Main()
     {
-        var a = await Test1();
+        var a = await GetValueAsync(1);
+        Console.WriteLine(a);
     }
 
-    private static async Task<int> Test1()
+    private static async Task<int> GetValueAsync(int numberToAdd)
     {
-        return 1;
+        return await Task.Run(() => numberToAdd * 2);
     }
 }
 
 ");
+        }
+
+        [TestMethod]
+        public async Task NonAwaitedAsyncTask_Diagnostic()
+        {
+
+            var expected = VerifyCS.Diagnostic("MakeConst").WithMessage("Async call should be awaited").WithSpan(9, 17, 9, 33);
+            await VerifyCS.VerifyAnalyzerAsync(@"
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    public static async Task Main()
+    {
+        var a = GetValueAsync(1);
+        Console.WriteLine(a);
+    }
+
+    private static async Task<int> GetValueAsync(int numberToAdd)
+    {
+        return await Task.Run(() => numberToAdd * 2);
+    }
+}
+
+", expected);
         }
 
         //No diagnostics expected to show up

@@ -70,7 +70,7 @@ namespace MakeConst {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable &apos;{0}&apos; can be made constant.
+        ///   Looks up a localized string similar to Async call should be awaited.
         /// </summary>
         internal static string AnalyzerMessageFormat {
             get {
@@ -79,7 +79,7 @@ namespace MakeConst {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Variable can be made constant.
+        ///   Looks up a localized string similar to Async call should be awaited.
         /// </summary>
         internal static string AnalyzerTitle {
             get {
