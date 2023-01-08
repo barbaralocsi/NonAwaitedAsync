@@ -55,18 +55,31 @@ namespace NonAwaitedAsync
                     }
 
                     var taskNamedTypeSymbol = syntaxNodeAnalysisContext.SemanticModel.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
-                    if (methodSymbol.ReturnType.Equals(taskNamedTypeSymbol))
+                    
+                    var returnTypesFullNameOfNamespace = GetFullname(methodSymbol.ReturnType.ContainingNamespace);
+
+                    if (returnTypesFullNameOfNamespace != "System.Threading.Tasks")
+                    {
+                        return;
+                    }
+
+                    //if (methodSymbol.ReturnType.Equals(taskNamedTypeSymbol))
+                    if (methodSymbol.ReturnType.Name == taskNamedTypeSymbol.Name)
                     {
                         // For all such symbols, produce a diagnostic.
                         var diagnostic =
                             Diagnostic.Create(Rule, node.GetLocation(), methodSymbol.ToDisplayString());
 
                         syntaxNodeAnalysisContext.ReportDiagnostic(diagnostic);
+                        
+                        //TODO: Check if code below this return is really needed
+                        return;
                     }
 
                     if (methodSymbol.ReturnType is INamedTypeSymbol symbol)
                     {
-                        if (symbol.IsGenericType && symbol.BaseType.Equals(taskNamedTypeSymbol))
+                        //if (symbol.IsGenericType && symbol.BaseType.Equals(taskNamedTypeSymbol))
+                        if (symbol.IsGenericType && symbol.BaseType.Name == taskNamedTypeSymbol.Name)
                         {
                             // For all such symbols, produce a diagnostic.
                             var diagnostic =
@@ -78,6 +91,17 @@ namespace NonAwaitedAsync
 
                 }
             }
+        }
+
+        private static string GetFullname(INamespaceSymbol ns)
+        {
+            if (ns.IsGlobalNamespace)
+                return "";
+
+            if (ns.ContainingNamespace.IsGlobalNamespace)
+                return ns.Name;
+
+            return GetFullname(ns.ContainingNamespace) + "." + ns.Name;
         }
 
     }

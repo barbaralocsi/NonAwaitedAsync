@@ -125,6 +125,37 @@ class Program
 
         //No diagnostics expected to show up
         [TestMethod]
+        public async Task CustomTaskClass_NoDiagnostics()
+        {
+            var test = @"
+using System;
+
+class Program
+{
+    public static void Main()
+    {
+         var task = CreateTask();
+         Console.WriteLine(task.Name);
+    }
+
+    private static Task CreateTask()
+    {
+        var t = new Task();
+        return t;
+    }
+}
+
+public class Task
+{
+    public int Name { get; set; }
+}
+";
+
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        //No diagnostics expected to show up
+        [TestMethod]
         public async Task TestMethod1()
         {
             var test = @"";
