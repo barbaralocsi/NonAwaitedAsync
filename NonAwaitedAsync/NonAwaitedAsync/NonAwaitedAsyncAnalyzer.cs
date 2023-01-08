@@ -48,11 +48,26 @@ namespace NonAwaitedAsync
                         .GetSymbolInfo(node.Expression, syntaxNodeAnalysisContext.CancellationToken)
                         .Symbol is IMethodSymbol methodSymbol)
                 {
-                    //AwaitExpression
+                    
                     if (node.Parent is AwaitExpressionSyntax)
                     {
                         return;
                     }
+
+                    if (node.Parent is ReturnStatementSyntax)
+                    {
+                        return;
+                    }
+
+                    //if (node.Parent is ExpressionStatementSyntax)
+                    //{
+                    //    return;
+                    //}
+
+                    //if (node.Expression is MemberAccessExpressionSyntax)
+                    //{
+                    //    return;
+                    //}
 
                     var taskNamedTypeSymbol = syntaxNodeAnalysisContext.SemanticModel.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
 
@@ -71,6 +86,41 @@ namespace NonAwaitedAsync
                     //if (methodSymbol.ReturnType.Equals(taskNamedTypeSymbol))
                     if (methodSymbol.ReturnType.Name == taskNamedTypeSymbol.Name)
                     {
+                        if (node.Parent is EqualsValueClauseSyntax equalsValueClauseParent)
+                        {
+                            // If the task is assigned to a variable with name task then we don't report diagnostics
+                            if (equalsValueClauseParent.Parent is VariableDeclaratorSyntax variableDeclarator)
+                            {
+                                if(variableDeclarator.Identifier.Text.ToLowerInvariant().Contains("task"))
+                                {
+                                    return;
+                                }
+                            }
+                        }
+
+                        if (node.Parent is ArgumentSyntax argumentSyntax)
+                        {
+                            if (argumentSyntax.Parent is ArgumentListSyntax argumentListSyntax)
+                            {
+                                if (argumentListSyntax.Parent is InvocationExpressionSyntax invocationExpressionSyntax)
+                                {
+                                    var memberAccesSyntaxNode = invocationExpressionSyntax.ChildNodes()
+                                        .FirstOrDefault(x => x is MemberAccessExpressionSyntax) as MemberAccessExpressionSyntax;
+                                    if (memberAccesSyntaxNode != null)
+                                    {
+                                        if (memberAccesSyntaxNode.Expression is IdentifierNameSyntax expressionSyntax)
+                                        {
+                                            if (memberAccesSyntaxNode.Name.Identifier.Text == "Add"
+                                                && expressionSyntax.Identifier.Text.ToLowerInvariant().Contains("task"))
+                                            {
+                                                return;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         // For all such symbols, produce a diagnostic.
                         var diagnostic =
                             Diagnostic.Create(Rule, node.GetLocation(), methodSymbol.ToDisplayString());

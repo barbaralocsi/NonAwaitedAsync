@@ -62,6 +62,56 @@ class Program
         }
 
         [TestMethod]
+        public async Task NonAwaitedAsyncTaskNamedTask_NoDiagnostic()
+        {
+            const string code = @"
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    public static async Task Main()
+    {
+        var myTask = GetValueAsync(1);
+        Console.WriteLine(myTask);
+    }
+
+    private static async Task<int> GetValueAsync(int numberToAdd)
+    {
+        return await Task.Run(() => numberToAdd * 2);
+    }
+}
+
+";
+            await VerifyCS.VerifyAnalyzerAsync(code);
+        }
+
+        [TestMethod]
+        public async Task ReturnedAsyncTaskInt_NoDiagnostic()
+        {
+            const string code = @"
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    public static async Task Main()
+    {
+        var a = await GetValueAsync(1);
+        Console.WriteLine(a);
+    }
+
+    private static Task<int> GetValueAsync(int numberToAdd)
+    {
+        return Task.Run(() => numberToAdd * 2);
+    }
+}
+
+";
+            await VerifyCS.VerifyAnalyzerAsync(code);
+        }
+
+        [TestMethod]
         public async Task NonAwaitedAsyncTask_ProducesDiagnostic()
         {
 
@@ -122,6 +172,8 @@ class Program
 
             await VerifyCS.VerifyAnalyzerAsync(code, expected);
         }
+
+
 
         //No diagnostics expected to show up
         [TestMethod]
@@ -187,6 +239,85 @@ class Program
 }";
 
             await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        [TestMethod]
+        public async Task ConfigureAwait_NoDiagnostics()
+        {
+            var test = @"
+using System;
+using System.Threading.Tasks;
+
+class Program
+{
+    public static async Task Main()
+    {
+         var privateKeyByteArray = await Task.Run(() => 1 * 2).ConfigureAwait(false);
+    }
+}";
+
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        [TestMethod]
+        public async Task TaskAddedToAList_NoDiagnostics()
+        {
+            var test = @"
+using System;
+using System.Threading.Tasks;
+using System.Collections.Generic;
+
+class Program
+{
+    public static async Task Main()
+    {
+         var taskList = new List<Task>();
+        taskList.Add(GetValueAsync(1));
+    }
+
+    private static async Task<int> GetValueAsync(int numberToAdd)
+    {
+        return await Task.Run(() => numberToAdd * 2);
+    }
+}";
+
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        [TestMethod]
+        public async Task DoSomethingAsync_Diagnostics()
+        {
+            var test = @"
+using System;
+using System.Threading.Tasks;
+
+namespace AsyncAwaitGames
+{
+    // In my real case, that method just returns Task.
+    public interface ICallee { Task<int> DoSomethingAsync(); }
+
+    public class Callee : ICallee
+    {
+        public async Task<int> DoSomethingAsync() => await Task.FromResult(0);
+    }
+    public class Caller
+    {
+        public void DoCall()
+        {
+            ICallee xxx = new Callee();
+
+            // In my real case, the method just returns Task,
+            // so there is no type mismatch when assigning a result 
+            // either.
+            xxx.DoSomethingAsync(); // This is where I had hoped for a warning.
+        }
+    }
+}";
+            var expected = VerifyCS.Diagnostic("NonAwaitedAsync")
+                .WithMessage("Async call should be awaited")
+                .WithSpan(23, 13, 23, 35);
+
+            await VerifyCS.VerifyAnalyzerAsync(test, expected);
         }
 
         //No diagnostics expected to show up
