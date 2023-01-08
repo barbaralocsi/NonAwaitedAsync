@@ -27,8 +27,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MakeConst.CodeFixes\MakeConst.CodeFixes.csproj" />
-    <ProjectReference Include="..\MakeConst\MakeConst.csproj" />
+    <ProjectReference Include="..\NonAwaitedAsync.CodeFixes\NonAwaitedAsync.CodeFixes.csproj" />
+    <ProjectReference Include="..\NonAwaitedAsync\NonAwaitedAsync.csproj" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,8 +37,8 @@
 
   <Target Name="_AddAnalyzersToOutput">
     <ItemGroup>
-      <TfmSpecificPackageFile Include="$(OutputPath)\MakeConst.dll" PackagePath="analyzers/dotnet/cs" />
-      <TfmSpecificPackageFile Include="$(OutputPath)\MakeConst.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\NonAwaitedAsync.dll" PackagePath="analyzers/dotnet/cs" />
+      <TfmSpecificPackageFile Include="$(OutputPath)\NonAwaitedAsync.CodeFixes.dll" PackagePath="analyzers/dotnet/cs" />
     </ItemGroup>
   </Target>
 

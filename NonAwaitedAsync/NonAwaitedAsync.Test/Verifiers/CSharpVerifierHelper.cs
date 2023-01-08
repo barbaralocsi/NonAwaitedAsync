@@ -3,7 +3,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System;
 using System.Collections.Immutable;
 
-namespace MakeConst.Test
+namespace NonAwaitedAsync.Test
 {
     internal static class CSharpVerifierHelper
     {

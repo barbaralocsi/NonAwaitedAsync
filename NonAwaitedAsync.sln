@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33205.214
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeConst", "MakeConst\MakeConst\MakeConst.csproj", "{A9A49F40-53F8-4738-B05F-BB9991FD9E7B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonAwaitedAsync", "NonAwaitedAsync\NonAwaitedAsync\NonAwaitedAsync.csproj", "{A9A49F40-53F8-4738-B05F-BB9991FD9E7B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeConst.CodeFixes", "MakeConst\MakeConst.CodeFixes\MakeConst.CodeFixes.csproj", "{71CD734A-8B7B-4C7F-BACE-FE4E2D4C29B8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonAwaitedAsync.CodeFixes", "NonAwaitedAsync\NonAwaitedAsync.CodeFixes\NonAwaitedAsync.CodeFixes.csproj", "{71CD734A-8B7B-4C7F-BACE-FE4E2D4C29B8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeConst.Package", "MakeConst\MakeConst.Package\MakeConst.Package.csproj", "{83D58C8C-2788-4C85-855C-19421C9B1538}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonAwaitedAsync.Package", "NonAwaitedAsync\NonAwaitedAsync.Package\NonAwaitedAsync.Package.csproj", "{83D58C8C-2788-4C85-855C-19421C9B1538}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeConst.Test", "MakeConst\MakeConst.Test\MakeConst.Test.csproj", "{72177F97-D831-446A-8FF8-EF139DCE7F69}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonAwaitedAsync.Test", "NonAwaitedAsync\NonAwaitedAsync.Test\NonAwaitedAsync.Test.csproj", "{72177F97-D831-446A-8FF8-EF139DCE7F69}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MakeConst.Vsix", "MakeConst\MakeConst.Vsix\MakeConst.Vsix.csproj", "{6FDF3B87-0309-4F45-BBC4-09033252219F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NonAwaitedAsync.Vsix", "NonAwaitedAsync\NonAwaitedAsync.Vsix\NonAwaitedAsync.Vsix.csproj", "{6FDF3B87-0309-4F45-BBC4-09033252219F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

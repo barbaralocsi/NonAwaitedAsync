@@ -13,14 +13,14 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace MakeConst
+namespace NonAwaitedAsync
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(MakeConstCodeFixProvider)), Shared]
-    public class MakeConstCodeFixProvider : CodeFixProvider
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NonAwaitedAsyncCodeFixProvider)), Shared]
+    public class NonAwaitedAsyncCodeFixProvider : CodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(MakeConstAnalyzer.DiagnosticId); }
+            get { return ImmutableArray.Create(NonAwaitedAsyncAnalyzer.DiagnosticId); }
         }
 
         public sealed override FixAllProvider GetFixAllProvider()

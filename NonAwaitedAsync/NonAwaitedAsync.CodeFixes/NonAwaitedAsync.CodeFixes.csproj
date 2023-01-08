@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <IsPackable>false</IsPackable>
-    <RootNamespace>MakeConst</RootNamespace>
+    <RootNamespace>NonAwaitedAsync</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MakeConst\MakeConst.csproj" />
+    <ProjectReference Include="..\NonAwaitedAsync\NonAwaitedAsync.csproj" />
   </ItemGroup>
 
   <ItemGroup>

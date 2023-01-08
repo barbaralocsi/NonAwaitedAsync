@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="MakeConst.6e6a8960-33bb-43d3-8041-c663a9c3a6c8" Version="1.0" Language="en-US" Publisher="Work"/>
-    <DisplayName>MakeConst</DisplayName>
+    <Identity Id="NonAwaitedAsync.6e6a8960-33bb-43d3-8041-c663a9c3a6c8" Version="1.0" Language="en-US" Publisher="Work"/>
+    <DisplayName>NonAwaitedAsync</DisplayName>
     <Description xml:space="preserve">This is a sample diagnostic extension for the .NET Compiler Platform ("Roslyn").</Description>
   </Metadata>
   <Installation>
@@ -12,10 +12,10 @@
     <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.5,)" />
   </Dependencies>
   <Assets>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="MakeConst" Path="|MakeConst|"/>
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="MakeConst" Path="|MakeConst|"/>
-    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="MakeConst.CodeFixes" Path="|MakeConst.CodeFixes|"/>
-    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="MakeConst.CodeFixes" Path="|MakeConst.CodeFixes|"/>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="NonAwaitedAsync" Path="|NonAwaitedAsync|"/>
+    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="NonAwaitedAsync" Path="|NonAwaitedAsync|"/>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="NonAwaitedAsync.CodeFixes" Path="|NonAwaitedAsync.CodeFixes|"/>
+    <Asset Type="Microsoft.VisualStudio.Analyzer" d:Source="Project" d:ProjectName="NonAwaitedAsync.CodeFixes" Path="|NonAwaitedAsync.CodeFixes|"/>
   </Assets>
   <Prerequisites>
     <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[15.0,)" DisplayName="Visual Studio core editor" />

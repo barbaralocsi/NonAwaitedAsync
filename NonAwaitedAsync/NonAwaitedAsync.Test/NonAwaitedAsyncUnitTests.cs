@@ -1,13 +1,13 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Threading.Tasks;
-using VerifyCS = MakeConst.Test.CSharpCodeFixVerifier<
-    MakeConst.MakeConstAnalyzer,
-    MakeConst.MakeConstCodeFixProvider>;
+using VerifyCS = NonAwaitedAsync.Test.CSharpCodeFixVerifier<
+    NonAwaitedAsync.NonAwaitedAsyncAnalyzer,
+    NonAwaitedAsync.NonAwaitedAsyncCodeFixProvider>;
 
-namespace MakeConst.Test
+namespace NonAwaitedAsync.Test
 {
     [TestClass]
-    public class MakeConstUnitTest
+    public class NonAwaitedAsyncUnitTest
     {
 
 
@@ -85,7 +85,7 @@ class Program
 
 ";
 
-            var expected = VerifyCS.Diagnostic("MakeConst")
+            var expected = VerifyCS.Diagnostic("NonAwaitedAsync")
                 .WithMessage("Async call should be awaited")
                 .WithSpan(9, 17, 9, 33);
 
@@ -116,7 +116,7 @@ class Program
 
 ";
 
-            var expected = VerifyCS.Diagnostic("MakeConst")
+            var expected = VerifyCS.Diagnostic("NonAwaitedAsync")
                 .WithMessage("Async call should be awaited")
                 .WithSpan(9, 17, 9, 33);
 
@@ -166,7 +166,7 @@ class Program
         }
     }";
 
-            var expected = VerifyCS.Diagnostic("MakeConst").WithLocation(0).WithArguments("TypeName");
+            var expected = VerifyCS.Diagnostic("NonAwaitedAsync").WithLocation(0).WithArguments("TypeName");
             await VerifyCS.VerifyCodeFixAsync(test, expected, fixtest);
         }
     }

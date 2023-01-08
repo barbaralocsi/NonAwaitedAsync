@@ -21,8 +21,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MakeConst.CodeFixes\MakeConst.CodeFixes.csproj" />
-    <ProjectReference Include="..\MakeConst\MakeConst.csproj" />
+    <ProjectReference Include="..\NonAwaitedAsync.CodeFixes\NonAwaitedAsync.CodeFixes.csproj" />
+    <ProjectReference Include="..\NonAwaitedAsync\NonAwaitedAsync.csproj" />
   </ItemGroup>
 
 </Project>

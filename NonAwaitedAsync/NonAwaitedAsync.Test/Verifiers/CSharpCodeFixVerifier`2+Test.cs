@@ -1,13 +1,15 @@
-﻿using Microsoft.CodeAnalysis.CSharp.Testing;
+﻿using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp.Testing;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Testing.Verifiers;
 
-namespace MakeConst.Test
+namespace NonAwaitedAsync.Test
 {
-    public static partial class CSharpAnalyzerVerifier<TAnalyzer>
+    public static partial class CSharpCodeFixVerifier<TAnalyzer, TCodeFix>
         where TAnalyzer : DiagnosticAnalyzer, new()
+        where TCodeFix : CodeFixProvider, new()
     {
-        public class Test : CSharpAnalyzerTest<TAnalyzer, MSTestVerifier>
+        public class Test : CSharpCodeFixTest<TAnalyzer, TCodeFix, MSTestVerifier>
         {
             public Test()
             {

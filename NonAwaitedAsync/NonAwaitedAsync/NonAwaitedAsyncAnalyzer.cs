@@ -11,12 +11,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace MakeConst
+namespace NonAwaitedAsync
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MakeConstAnalyzer : DiagnosticAnalyzer
+    public class NonAwaitedAsyncAnalyzer : DiagnosticAnalyzer
     {
-        public const string DiagnosticId = "MakeConst";
+        public const string DiagnosticId = "NonAwaitedAsync";
 
         // You can change these strings in the Resources.resx file. If you do not want your analyzer to be localize-able, you can use regular strings for Title and MessageFormat.
         // See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Localizing%20Analyzers.md for more on localization
@@ -36,11 +36,9 @@ namespace MakeConst
 
             // TODO: Consider registering other actions that act on syntax instead of or in addition to symbols
             // See https://github.com/dotnet/roslyn/blob/main/docs/analyzers/Analyzer%20Actions%20Semantics.md for more information
-            //context.RegisterSymbolAction(AnalyzeSymbol, SymbolKind.NamedType);
 
             context.RegisterSyntaxNodeAction(AnalyzeSymbolNode, SyntaxKind.InvocationExpression);
         }
-
         private void AnalyzeSymbolNode(SyntaxNodeAnalysisContext syntaxNodeAnalysisContext)
         {
             if (syntaxNodeAnalysisContext.Node is InvocationExpressionSyntax node)
@@ -82,45 +80,5 @@ namespace MakeConst
             }
         }
 
-        private void AnalyzeNode(SyntaxNodeAnalysisContext context)
-        {
-            var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
-
-            // make sure the declaration isn't already const:
-            if (localDeclaration.Modifiers.Any(SyntaxKind.ConstKeyword))
-            {
-                return;
-            }
-
-            // Perform data flow analysis on the local declaration.
-            DataFlowAnalysis dataFlowAnalysis = context.SemanticModel.AnalyzeDataFlow(localDeclaration);
-
-            // Retrieve the local symbol for each variable in the local declaration
-            // and ensure that it is not written outside of the data flow analysis region.
-            VariableDeclaratorSyntax variable = localDeclaration.Declaration.Variables.Single();
-            ISymbol variableSymbol = context.SemanticModel.GetDeclaredSymbol(variable, context.CancellationToken);
-            if (dataFlowAnalysis.WrittenOutside.Contains(variableSymbol))
-            {
-                return;
-            }
-
-            context.ReportDiagnostic(Diagnostic.Create(Rule, context.Node.GetLocation(), localDeclaration.Declaration.Variables.First().Identifier.ValueText));
-        }
-
-        private static void AnalyzeSymbol(SymbolAnalysisContext context)
-        {
-            // TODO: Replace the following code with your own analysis, generating Diagnostic objects for any issues you find
-            var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
-
-            // Find just those named type symbols with names containing lowercase letters.
-            if (namedTypeSymbol.Name.ToCharArray().Any(char.IsLower))
-            {
-                // For all such symbols, produce a diagnostic.
-                var diagnostic = Diagnostic.Create(Rule, namedTypeSymbol.Locations[0], namedTypeSymbol.Name);
-
-                context.ReportDiagnostic(diagnostic);
-            }
-
-        }
     }
 }
