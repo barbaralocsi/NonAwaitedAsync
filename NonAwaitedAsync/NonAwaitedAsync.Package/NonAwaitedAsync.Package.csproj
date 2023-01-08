@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
@@ -9,7 +9,7 @@
 
   <PropertyGroup>
     <PackageId>NonAwaitedAsyncAnalyzer</PackageId>
-    <PackageVersion>1.0.0.6</PackageVersion>
+    <PackageVersion>1.0.0.17</PackageVersion>
     <Authors>Work</Authors>
     <PackageLicenseUrl>http://LICENSE_URL_HERE_OR_DELETE_THIS_LINE</PackageLicenseUrl>
     <PackageProjectUrl>http://PROJECT_URL_HERE_OR_DELETE_THIS_LINE</PackageProjectUrl>

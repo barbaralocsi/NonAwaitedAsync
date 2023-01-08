@@ -154,6 +154,41 @@ public class Task
             await VerifyCS.VerifyAnalyzerAsync(test);
         }
 
+        [TestMethod]
+        public async Task String_ReturnTypesContainingNameSpaceIsNull_ShouldNotThrow()
+        {
+            var test = @"
+using System;
+using System.Text;
+
+class Program
+{
+    public static void Main()
+    {
+         var privateKeyByteArray = Encoding.ASCII.GetBytes(""bytes"");
+    }
+}";
+        
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
+        [TestMethod]
+        public async Task PropertyInfo_ReturnTypesContainingNameSpaceIsNull_ShouldNotThrow()
+        {
+            var test = @"
+using System;
+
+class Program
+{
+    public static void Main()
+    {
+         var privateKeyByteArray = typeof(Program).GetProperties();
+    }
+}";
+
+            await VerifyCS.VerifyAnalyzerAsync(test);
+        }
+
         //No diagnostics expected to show up
         [TestMethod]
         public async Task TestMethod1()

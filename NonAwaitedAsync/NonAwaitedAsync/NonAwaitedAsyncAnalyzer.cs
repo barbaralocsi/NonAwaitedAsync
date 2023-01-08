@@ -55,7 +55,12 @@ namespace NonAwaitedAsync
                     }
 
                     var taskNamedTypeSymbol = syntaxNodeAnalysisContext.SemanticModel.Compilation.GetTypeByMetadataName(typeof(Task).FullName);
-                    
+
+                    if (methodSymbol.ReturnType.ContainingNamespace is null)
+                    {
+                        return;
+                    }
+
                     var returnTypesFullNameOfNamespace = GetFullname(methodSymbol.ReturnType.ContainingNamespace);
 
                     if (returnTypesFullNameOfNamespace != "System.Threading.Tasks")
@@ -95,6 +100,11 @@ namespace NonAwaitedAsync
 
         private static string GetFullname(INamespaceSymbol ns)
         {
+            if (ns == null)
+            {
+                throw new ArgumentNullException(nameof(ns));
+            }
+
             if (ns.IsGlobalNamespace)
                 return "";
 
